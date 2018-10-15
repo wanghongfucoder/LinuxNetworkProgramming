@@ -1,19 +1,13 @@
 #include "daytime_tcp.h"
 #include <ctime>
 
-int main(int argc, char* argv[]){
-#ifdef WIN32
-    WORD sockVersion = MAKEWORD(2, 2);
-    WSADATA data;
-    if (WSAStartup(sockVersion, &data) != 0)
-    {
-        return 0;
-    }
-#endif
+int main(int argc, char* argv[])
+{
     //  创建套接字
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if(listen_fd == INVALID_SOCKET){
-        err_sys("socket() error.");
+    if (listen_fd < 0)
+    {
+        err_sys("socket() error");
     }
     // 指定地址，作为服务端允许任意地址连接
     sockaddr_in sa_server;
@@ -25,41 +19,39 @@ int main(int argc, char* argv[]){
     // 个IP上面，如果指定为INADDR_ANY，那么系统将绑定默认的网卡【即IP地址】。
     // s_addr是ip地址
     sa_server.sin_addr.s_addr = htonl(INADDR_ANY);
-    sa_server.sin_port = htons(13);
+    sa_server.sin_port        = htons(13);
 
     // 绑定
-    int ret = bind(listen_fd, reinterpret_cast<sockaddr*>(&sa_server), sizeof(sa_server));
-    if(ret == SOCKET_ERROR){
-        err_sys("bind() error.");
+    int ret = bind(listen_fd, reinterpret_cast<sockaddr*>(&sa_server),
+                   sizeof(sa_server));
+    if (ret < 0)
+    {
+        err_sys("bind() error");
     }
 
     // 监听
     ret = listen(listen_fd, LISTENQ);
-    if(ret == SOCKET_ERROR){
-        err_sys("listen() error.");
+    if (ret < 0)
+    {
+        err_sys("listen() error");
     }
 
-    int connect_fd = 0;
+    int    connect_fd = 0;
     time_t now;
-    char buff[MAXLINE];
-    for(;;){
+    char   buff[MAXLINE];
+    for (;;)
+    {
         // 接收到一个连接
         connect_fd = accept(listen_fd, reinterpret_cast<sockaddr*>(NULL), NULL);
-        if(connect_fd == INVALID_SOCKET){
+        if (connect_fd < 0)
+        {
             err_sys("accept() error.");
         }
 
         now = time(NULL);
         snprintf(buff, MAXLINE, "time is %.24s.\r\n", ctime(&now));
-#ifdef WIN32
-        ret = send(connect_fd, buff, strlen(buff), 0);
-        closesocket(connect_fd);
-#elif
         ret = write(connect_fd, buff, strlen(buff));
         close(connect_fd);
-#endif
     }
-#ifdef WIN32
-    WSACleanup();
-#endif
+    close(listen_fd);
 }
