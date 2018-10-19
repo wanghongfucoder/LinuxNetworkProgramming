@@ -15,6 +15,7 @@ include_directories(
 
 add_executable(day_time_client day_time_client.cpp)
 add_executable(day_time_server day_time_server.cpp)
+add_executable(byte_order byte_order.cpp)
 
 if(WIN32)
    target_link_libraries(day_time_client wsock32 ws2_32)
