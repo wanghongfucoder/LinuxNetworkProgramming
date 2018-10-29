@@ -17,14 +17,18 @@ int main(int argc, char* argv[])
     // 地址族：AF_INET（又称PF_INET）是IPv4 网络协议的套接字类型
     sa_client.sin_family = AF_INET;
     // ip，inet_pton将ipv4或者ipv6的地址转换成二进制(windows中似乎没有实现inet_pton)
-    ret = inet_pton(AF_INET, argv[1], &sa_client.sin_addr);
+    if(argc == 2){
+        ret = inet_pton(AF_INET, argv[1], &sa_client.sin_addr);
+    }else{
+        ret = inet_pton(AF_INET, "222.20.79.231", &sa_client.sin_addr);
+    }
     if (ret <= 0)
     {
         err_sys("inet_pton error");
         exit(1);
     }
     // port
-    sa_client.sin_port = htons(13);  // 主机到网络短整数
+    sa_client.sin_port = htons(10003);  // 主机到网络短整数
 
     // 使用套接字连接指定地址
     ret = connect(socket_client, reinterpret_cast<sockaddr*>(&sa_client),
