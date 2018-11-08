@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     seraddr.sin_port        = htons(23333);
     seraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    Bind(listenfd, reinterpret_cast<sockaddr*>(seraddr), sizeof(seraddr));
+    Bind(listenfd, reinterpret_cast<SA*>(&seraddr), sizeof(seraddr));
 
     Listen(listenfd, LISTENQ);
 
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     for (;;) {
         clilen = sizeof(cliaddr);
         connfd =
-            Accept(listenfd, reinterpret_cast<sockaddr*>(cliaddr), &clilen);
+            Accept(listenfd, reinterpret_cast<SA*>(&cliaddr), &clilen);
         if ((childpid = Fork()) == 0) {
             Close(listenfd);
             str_echo(connfd);

@@ -32,7 +32,7 @@ int Fcntl(int fd, int cmd, int arg)
 
 void Gettimeofday(struct timeval* tv, void* foo)
 {
-    if (gettimeofday(tv, foo) == -1)
+    if (gettimeofday(tv, (__timezone_ptr_t)foo) == -1)
         err_sys("gettimeofday error");
     return;
 }
@@ -64,17 +64,17 @@ void* Malloc(size_t size)
     return (ptr);
 }
 
-int Mkstemp(char* template)
+int Mkstemp(char* __template)
 {
     int i;
 
 #ifdef HAVE_MKSTEMP
-    if ((i = mkstemp(template)) < 0)
+    if ((i = mkstemp(__template)) < 0)
         err_quit("mkstemp error");
 #else
-    if (mktemp(template) == NULL || template[0] == 0)
+    if (mktemp(__template) == NULL || __template[0] == 0)
         err_quit("mktemp error");
-    i = Open(template, O_CREAT | O_WRONLY, FILE_MODE);
+    i = Open(__template, O_CREAT | O_WRONLY, FILE_MODE);
 #endif
 
     return i;

@@ -7,14 +7,13 @@
 #include <cstring>
 
 #if __linux__
-#include <netinet/in.h> // struct sockaddr_in
-#include <arpa/inet.h> // inet_pton()
-#include <unistd.h>  // read()
+#include <netinet/in.h>  // struct sockaddr_in
+#include <arpa/inet.h>   // inet_pton()
+#include <unistd.h>      // read()
 #elif WIN32
 #include <winsock2.h>
 // 提供inet_pton函数
 // WS2tcpip.h 必须是显式包含 Winsock2.h 后才能在此级别使用套接字选项
-
 
 /*
   和在工程设置里写上链入Ws2_32.lib的效果一样，不过这种方法写的  
@@ -29,7 +28,7 @@
   这个功能就是修复软件与系统正确的通讯的作用。
 */
 
-#pragma comment(lib,"ws2_32.lib")
+#pragma comment(lib, "ws2_32.lib")
 #endif
 
-#endif // !DAYTIME_TCP_H_
+#endif  // !DAYTIME_TCP_H_

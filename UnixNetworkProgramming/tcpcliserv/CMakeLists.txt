@@ -1,9 +1,9 @@
 include_directories(
-    "../lib"
+    ${UNP_SOURCE_DIR}/lib
 )
 
 link_directories(
-    "../lib"
+    ${UNP_BINARY_DIR}/lib
 )
 
 add_executable(tcpcli01 tcpcli01.cpp)

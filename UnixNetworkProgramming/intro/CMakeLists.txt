@@ -9,11 +9,11 @@
 # message(STATUS "This is SOURCE dir " ${Intro_SOURCE_DIR})
 
 include_directories( 
-    "../lib" 
+    ${UNP_SOURCE_DIR}/lib
 )
 
 link_directories(
-    "../lib"
+    ${UNP_BINARY_DIR}/lib
 )
 
 add_executable(day_time_client day_time_client.cpp)
