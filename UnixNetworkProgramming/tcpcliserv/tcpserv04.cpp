@@ -15,9 +15,10 @@ int main(int argc, char const *argv[])
     Listen(listenfd, LISTENQ);
 
     void sig_chld(int);
+    // here set function for signal
     Signal(SIGCHLD, sig_chld);
 
-    int clilen;
+    socklen_t clilen;
     struct sockaddr_in cliaddr;
     pid_t childpid;
     int connfd;
@@ -33,7 +34,7 @@ int main(int argc, char const *argv[])
 
         if((childpid = Fork()) == 0){
             Close(listenfd);
-            str_echo(connfd);
+            str_echo08(connfd);
             exit(0);
         }
         Close(connfd);

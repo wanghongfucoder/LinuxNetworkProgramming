@@ -13,8 +13,8 @@ add_executable(tcpserv01 tcpserv01.cpp)
 target_link_libraries(tcpserv01 unp)
 
 add_executable(tcpcli04 tcpcli04.cpp)
-target_link_libraries(tcpcli01 unp)
+target_link_libraries(tcpcli04 unp)
 
-add_executable(tcpserv04 tcpserv04.cpp)
-target_link_libraries(tcpserv01 unp)
+add_executable(tcpserv04 tcpserv04.cpp sigchldwaitpid.cpp)
+target_link_libraries(tcpserv04 unp)
 
