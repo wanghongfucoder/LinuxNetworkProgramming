@@ -1,4 +1,11 @@
-#include "unp.h"
+#include "../lib/unp.h"
+
+/**
+ * 拒绝服务型攻击：如果有一个恶意的客户端程序连接了该服务器，发送了1个字节之后进入睡眠，
+ * 那么服务器会阻塞于下一个read调用，以等待来自于该客户端的数据，服务器端被这么一个客户端阻塞，
+ * 不能再为其他客户提供服务。
+ * 因此，服务器绝对不能阻塞鱼单个客户的相关的函数调用。
+ */ 
 
 int main() {
 
@@ -36,6 +43,7 @@ int main() {
     ssize_t            n;
     for (;;) {
         rset   = allset;
+        // 获得已经就绪的描述符的数量
         nready = Select(maxfd + 1, &rset, nullptr, nullptr, nullptr);
 
         int i = 0;
@@ -80,6 +88,7 @@ int main() {
             if (FD_ISSET(sockfd, &rset)) {
                 if ((n = Read(sockfd, buf, MAXLINE)) == 0) {
                     // connection closed by client
+                    // 连接被客户端关闭，这边也关闭
                     Close(sockfd);
                     FD_CLR(sockfd, &allset);
                     client[i] = -1;
