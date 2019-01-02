@@ -1,5 +1,10 @@
 #include "../lib/unp.h"
 
+/**
+ * TCP程序实例：复读机程序第一个版本，最简单的回射网络服务端
+ * 等待连接的客户发射字符串过来，再复读回去
+ */ 
+
 int main(int argc, char** argv) {
     int listenfd;
     listenfd = Socket(AF_INET, SOCK_STREAM, 0);

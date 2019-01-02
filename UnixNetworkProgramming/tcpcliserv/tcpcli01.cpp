@@ -1,5 +1,9 @@
-#include "unp.h"
+#include "../lib/unp.h"
 
+/**
+ * TCP程序实例：复读机程序第一个版本，最简单的回射网络客户端
+ * 只能发射一段字符给服务器，并等待服务器复读回射给客户
+ */ 
 int main(int argc, char** argv) {
     // int sockfd;
     // struct sockaddr_in server_addr;

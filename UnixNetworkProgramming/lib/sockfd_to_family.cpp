@@ -1,6 +1,8 @@
 #include "unp.h"
 
-
+/**
+ * 获取某个套接字的本地协议的版本
+ */ 
 int sockfd_to_family(int sockfd){
     struct sockaddr_storage ss;
     socklen_t len;

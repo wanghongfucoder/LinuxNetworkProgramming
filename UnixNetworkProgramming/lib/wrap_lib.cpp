@@ -1,3 +1,7 @@
+/**
+ * 把网络端的 ip 地址转换成 xxx.xxx.xxx.xxx 类型的地址
+ * 封装函数
+ */ 
 #include	"unp.h"
 
 const char *
@@ -12,10 +16,13 @@ Inet_ntop(int family, const void *addrptr, char *strptr, size_t len)
 	return(ptr);
 }
 
+/**
+ * 把xxx.xxx.xxx.xxx 类型的地址转换成网络端的 ip 地址
+ */ 
 void
 Inet_pton(int family, const char *strptr, void *addrptr)
 {
-	int		n;
+	int	n;
 
 	if ( (n = inet_pton(family, strptr, addrptr)) < 0)
 		err_sys("inet_pton error for %s", strptr);	/* errno set */

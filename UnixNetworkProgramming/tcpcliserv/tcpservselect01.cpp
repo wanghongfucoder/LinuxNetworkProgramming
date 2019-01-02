@@ -14,6 +14,7 @@ int main() {
 
     Listen(listenfd, LISTENQ);
 
+    // 对client[]初始化
     int maxfd = listenfd;
     int maxi  = -1;
     int client[FD_SETSIZE];
@@ -21,6 +22,7 @@ int main() {
         client[i] = -1;
     }
 
+    // 初始化allset，默认select监听套接字
     fd_set allset;
     FD_ZERO(&allset);
     FD_SET(listenfd, &allset);
@@ -37,12 +39,13 @@ int main() {
         nready = Select(maxfd + 1, &rset, nullptr, nullptr, nullptr);
 
         int i = 0;
+        // 如果监听套接字可读
         if (FD_ISSET(listenfd, &rset)) {
-            // get new client connection
+            // 得到新连接的描述符
             clilen = sizeof(cliaddr);
             connfd = Accept(listenfd, reinterpret_cast<SA*>(&cliaddr), &clilen);
 
-            // save descriptor
+            // 保存描述符
             for (i = 0; i < FD_SETSIZE; ++i) {
                 if (client[i] < 0) {
                     client[i] = connfd;
@@ -52,9 +55,9 @@ int main() {
                 err_quit("too many clients.");
             }
 
-            // add new descriptor to set
+            // 把新的描述符添加到描述符集
             FD_SET(connfd, &allset);
-            // for select
+            // for select，更新最大的描述符索引
             if (connfd > maxfd) {
                 maxfd = connfd;
             }
@@ -68,6 +71,7 @@ int main() {
             }
         }
 
+        // 依次处理每个select的描述符
         // check all clients for data
         for (i = 0; i < maxi; ++i) {
             if ((sockfd = client[i]) < 0) {

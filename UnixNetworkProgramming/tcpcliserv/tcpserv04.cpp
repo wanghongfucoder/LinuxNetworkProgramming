@@ -1,5 +1,9 @@
 #include "unp.h"
 
+/**
+ * 信号处理实例：正确处理 accept() 函数返回的 EINTR，
+ * 并建立一个给所有已终止子进程调用 waitpid 函数的信号处理函数
+ */ 
 int main(int argc, char const *argv[])
 {
     int listenfd = Socket(AF_INET, SOCK_STREAM, 0);
@@ -15,7 +19,8 @@ int main(int argc, char const *argv[])
     Listen(listenfd, LISTENQ);
 
     void sig_chld(int);
-    // here set function for signal
+
+    // 注册信号处理函数
     Signal(SIGCHLD, sig_chld);
 
     socklen_t clilen;

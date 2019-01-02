@@ -16,6 +16,9 @@
  *warning: passing arg 2 of `connect' discards `const' from pointer target type
  */
 
+/**
+ * 封装函数
+ */ 
 #include "unp.h"
 
 int Accept(int fd, struct sockaddr* sa, socklen_t* salenptr) {

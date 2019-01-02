@@ -1,3 +1,6 @@
+/**
+ * error工具函数，直接抄过来
+ */ 
 #include "unp.h"
 
 #include <stdarg.h> /* ANSI C header file */
